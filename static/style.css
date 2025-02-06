@@ -1,0 +1,96 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 20px;
+  background-color: #333; /* Optional: Background for the entire page */
+  color: white;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 8px;
+  margin: 5px;
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button:nth-child(2) {
+  background-color: orange;
+}
+
+button:nth-child(3) {
+  background-color: red;
+  color: white;
+}
+
+#status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: center;
+  /* Center align the entire status section */
+}
+
+.floor {
+  width: fit-content; /* Adjust width to fit the content */
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  text-align: left;
+  display: inline-block; /* Ensure it's only as wide as the content */
+}
+
+.floor strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+  padding-bottom: 5px; /* Space below the floor number */
+}
+
+
+.rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;  /* This centers the room elements */
+}
+
+.room {
+  display: inline-block;
+  width: 50px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.available {
+  background-color: #c8f7c5;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+}
+
+.booked {
+  background-color: #ffcccb;
+  color: #b71c1c;
+  border: 1px solid #b71c1c;
+}

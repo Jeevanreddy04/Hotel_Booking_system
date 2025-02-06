@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Room Reservation System</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function bookRooms() {
+            let numRooms = document.getElementById("numRooms").value;
+            
+            if (numRooms <= 0) {
+                alert("Please enter a valid number of rooms.");
+                return;
+            }
+
+            let response = await fetch("/book", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ num_rooms: parseInt(numRooms) })
+            });
+
+            let data = await response.json();
+            
+            if (data.status === "success") {
+                // Successfully booked rooms
+                alert(`Successfully booked ${data.booked_rooms.length} room(s)!`);
+                
+                // Display the booked rooms below the booking form
+                displayBookedRooms(data.booked_rooms);
+            } else {
+                // Failed booking
+                alert(`Booking failed: ${data.message}`);
+            }
+        }
+
+        // Display booked rooms on the page
+        function displayBookedRooms(bookedRooms) {
+            let roomsDiv = document.getElementById("bookedRooms");
+            roomsDiv.innerHTML = "";  // Clear previous content
+            
+            bookedRooms.forEach(room => {
+                let roomDetails = document.createElement("p");
+                roomDetails.textContent = `Floor ${room[0]}, Room ${room[1]}`;
+                roomsDiv.appendChild(roomDetails);
+            });
+        }
+
+        async function resetRooms() {
+            await fetch("/reset", { method: "POST" });
+            loadStatus();
+        }
+
+        async function randomizeRooms() {
+            await fetch("/randomize", { method: "POST" });
+            loadStatus();
+        }
+
+        async function loadStatus() {
+            let response = await fetch("/status");
+            let data = await response.json();
+            let statusDiv = document.getElementById("status");
+            statusDiv.innerHTML = "";
+            
+            for (let floor in data) {
+                let floorDiv = document.createElement("div");
+                floorDiv.className = "floor";
+                let roomsDiv = document.createElement("div");
+                roomsDiv.className = "rooms";
+                
+                for (let room in data[floor]) {
+                    let roomSpan = document.createElement("span");
+                    roomSpan.className = `room ${data[floor][room]}`;
+                    roomSpan.innerText = room;
+                    roomsDiv.appendChild(roomSpan);
+                }
+
+                floorDiv.innerHTML = `<strong>Floor ${floor}</strong>`;
+                floorDiv.appendChild(roomsDiv);
+                statusDiv.appendChild(floorDiv);
+            }
+        }
+    </script>
+</head>
+<body onload="loadStatus()">
+    <h1>Hotel Room Reservation System</h1>
+    <label>Enter Number of Rooms:</label>
+    <input type="number" id="numRooms" min="1" max="5">
+    <button onclick="bookRooms()">Book</button>
+    <button onclick="randomizeRooms()">Random</button>
+    <button onclick="resetRooms()">Reset</button>
+    
+    <div id="status"></div>
+
+    <div id="bookedRooms">
+        <!-- Booked rooms will be displayed here -->
+    </div>
+</body>
+</html>
