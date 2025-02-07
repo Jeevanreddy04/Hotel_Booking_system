@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 import random
-
+import os
 app = Flask(__name__)
 
 # Initialize hotel rooms (1-9 floors have 10 rooms each, 10th floor has 7 rooms)
@@ -75,5 +75,8 @@ def randomize_rooms():
 def get_status():
     return jsonify(hotel)
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Use PORT from environment, default to 5000
+    app.run(host='0.0.0.0', port=port, debug=True)
+
